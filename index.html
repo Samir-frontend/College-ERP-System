@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College ERP System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body data-theme="dark">
+  <div class="overlay" id="overlay"></div>
+
+  <header class="site-header">
+    <div class="header-left">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div class="brand-text">
+          <h1>College ERP</h1>
+          <p>Student Dashboard</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="btn secondary mobile-only" id="themeToggleMobile" type="button">Theme</button>
+      <button class="btn secondary" id="loginBtn" type="button">Login</button>
+      <button class="btn primary" id="signupBtn" type="button">Sign Up</button>
+    </div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand sidebar-brand">
+      <div class="brand-mark">C</div>
+      <div class="brand-text">
+        <h1>College ERP</h1>
+        <p>Student Dashboard</p>
+      </div>
+      <button class="icon-btn mobile-only" id="closeSidebarBtn" type="button">×</button>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-tab="dashboard" type="button">Dashboard</button>
+      <button class="nav-item" data-tab="attendance" type="button">Attendance</button>
+      <button class="nav-item" data-tab="notes" type="button">Notes</button>
+      <button class="nav-item" data-tab="assignments" type="button">Assignments</button>
+      <button class="nav-item" data-tab="results" type="button">Results</button>
+      <button class="nav-item" data-tab="fees" type="button">Fee Module</button>
+      <button class="nav-item" data-tab="faculty" type="button">Faculty Panel</button>
+      <button class="nav-item" data-tab="recruiters" type="button">Recruiters</button>
+      <button class="nav-item" data-tab="profile" type="button">Profile</button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn secondary" id="themeToggle" type="button">Toggle Theme</button>
+      <button class="btn secondary" id="notificationToggle" type="button">Notifications</button>
+    </div>
+  </aside>
+
+  <div class="notifications" id="notificationsDropdown">
+    <h3>Notifications</h3>
+    <div class="notification-item">Assignment due tomorrow</div>
+    <div class="notification-item">Attendance updated</div>
+    <div class="notification-item">Fee receipt generated</div>
+  </div>
+
+  <main class="main" id="mainApp">
+    <header class="topbar">
+      <div class="left-top">
+        <button class="icon-btn desktop-only" id="collapseSidebarBtn" type="button">☰</button>
+        <button class="icon-btn mobile-only" id="openSidebarBtn" type="button">☰</button>
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <input type="text" class="search" id="globalSearch" placeholder="Search across modules..." />
+        <button class="btn primary search-btn" id="globalSearchBtn" type="button">Search</button>
+        <button class="btn secondary" id="printBtn" type="button">Print</button>
+        <button class="btn secondary" id="pdfBtn" type="button">PDF</button>
+        <button class="btn primary" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="panel active" id="dashboard">
+      <div class="hero">
+        <span class="pill">College ERP System</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card clickable-card" data-go="attendance">
+          <h4 id="statStudents">1240</h4>
+          <p>Total Students</p>
+        </div>
+        <div class="stat-card clickable-card" data-go="attendance">
+          <h4 id="statPresent">1108</h4>
+          <p>Present Today</p>
+        </div>
+        <div class="stat-card clickable-card" data-go="assignments">
+          <h4 id="statAssignments">34</h4>
+          <p>Pending Assignments</p>
+        </div>
+        <div class="stat-card clickable-card" data-go="fees">
+          <h4 id="statFees">18</h4>
+          <p>Pending Fees</p>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="panel-card">
+          <div class="panel-head">
+            <h3>Attendance Overview</h3>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-chart" id="attendanceDonut"></div>
+            <div class="donut-legend" id="attendanceLegend"></div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-head">
+            <h3>Fee Overview</h3>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-chart" id="feeDonut"></div>
+            <div class="donut-legend" id="feeLegend"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="module-card tab-link" data-tab="attendance"><h4>Attendance</h4></div>
+        <div class="module-card tab-link" data-tab="notes"><h4>Notes</h4></div>
+        <div class="module-card tab-link" data-tab="assignments"><h4>Assignments</h4></div>
+        <div class="module-card tab-link" data-tab="results"><h4>Results</h4></div>
+        <div class="module-card tab-link" data-tab="fees"><h4>Fee Module</h4></div>
+        <div class="module-card tab-link" data-tab="profile"><h4>Profile</h4></div>
+      </div>
+    </section>
+
+    <section class="panel" id="attendance">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Attendance</h3>
+          <div class="action-row">
+            <input type="text" id="attendanceSearch" class="search small" placeholder="Search attendance..." />
+            <button class="btn primary search-btn" data-search="attendance" type="button">Search</button>
+            <button class="btn primary" id="addAttendanceBtn" type="button">Add Attendance</button>
+          </div>
+        </div>
+
+        <form class="form-grid" id="attendanceForm" novalidate>
+          <input type="hidden" id="attendanceId" />
+          <div class="input-group">
+            <label>Student Name</label>
+            <input type="text" id="attendanceName" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Roll No</label>
+            <input type="text" id="attendanceRoll" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Class</label>
+            <input type="text" id="attendanceClass" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Status</label>
+            <select id="attendanceStatus" required>
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+            </select>
+            <small class="error"></small>
+          </div>
+          <div class="input-group full">
+            <button class="btn primary" type="submit">Save Attendance</button>
+          </div>
+        </form>
+
+        <div class="empty-state hidden" id="attendanceEmpty">Not Available</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Roll No</th>
+              <th>Class</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="notes">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Notes</h3>
+          <div class="action-row">
+            <input type="text" id="notesSearch" class="search small" placeholder="Search notes..." />
+            <button class="btn primary search-btn" data-search="notes" type="button">Search</button>
+            <button class="btn primary" id="newNoteBtn" type="button">New Note</button>
+          </div>
+        </div>
+
+        <form class="form-grid" id="notesForm" novalidate>
+          <input type="hidden" id="noteId" />
+          <div class="input-group">
+            <label>Subject</label>
+            <input type="text" id="noteSubject" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Title</label>
+            <input type="text" id="noteTitle" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group full">
+            <label>Description</label>
+            <textarea id="noteDescription" required></textarea>
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Type</label>
+            <input type="text" id="noteType" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Semester</label>
+            <input type="text" id="noteSemester" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group full">
+            <button class="btn primary" type="submit">Save Note</button>
+          </div>
+        </form>
+
+        <div class="empty-state hidden" id="notesEmpty">Not Available</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Semester</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="notesTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="assignments">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Assignments</h3>
+          <div class="action-row">
+            <input type="text" id="assignmentSearch" class="search small" placeholder="Search assignments..." />
+            <button class="btn primary search-btn" data-search="assignments" type="button">Search</button>
+            <button class="btn primary" id="newAssignmentBtn" type="button">New Assignment</button>
+          </div>
+        </div>
+
+        <form class="form-grid" id="assignmentForm" novalidate>
+          <input type="hidden" id="assignmentId" />
+          <div class="input-group">
+            <label>Title</label>
+            <input type="text" id="assignmentTitle" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Subject</label>
+            <input type="text" id="assignmentSubject" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Due Date</label>
+            <input type="date" id="assignmentDue" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Status</label>
+            <select id="assignmentStatus">
+              <option value="Pending">Pending</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Completed">Completed</option>
+            </select>
+            <small class="error"></small>
+          </div>
+          <div class="input-group full">
+            <button class="btn primary" type="submit">Save Assignment</button>
+          </div>
+        </form>
+
+        <div class="empty-state hidden" id="assignmentsEmpty">Not Available</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Subject</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="assignmentsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="results">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Results</h3>
+          <div class="action-row">
+            <input type="text" id="resultsSearch" class="search small" placeholder="Search results..." />
+            <button class="btn primary search-btn" data-search="results" type="button">Search</button>
+          </div>
+        </div>
+        <div class="empty-state hidden" id="resultsEmpty">Not Available</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Subject</th>
+              <th>Marks</th>
+              <th>Grade</th>
+              <th>Remark</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="fees">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Fee Module</h3>
+          <button class="btn primary" id="addFeeBtn" type="button">Add Fee Record</button>
+        </div>
+        <div class="empty-state hidden" id="feesEmpty">Not Available</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Total Fee</th>
+              <th>Paid</th>
+              <th>Due</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="feesTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="faculty">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Faculty Panel</h3>
+          <button class="btn primary" id="facultyActionBtn" type="button">Faculty Action</button>
+        </div>
+        <p class="plain-text">Faculty management area with premium UI.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="recruiters">
+      <div class="stats-grid">
+        <div class="stat-card"><h4>312</h4><p>Placed Students</p></div>
+        <div class="stat-card"><h4>46</h4><p>Companies Visited</p></div>
+        <div class="stat-card"><h4>6.8 LPA</h4><p>Average Package</p></div>
+        <div class="stat-card"><h4>128</h4><p>Open Roles</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="profile">
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3>Student Profile</h3>
+          <button class="btn primary" id="saveProfileBtn" type="button">Save Profile</button>
+        </div>
+
+        <form class="form-grid" id="profileForm" novalidate>
+          <div class="input-group">
+            <label>Name</label>
+            <input type="text" id="profileName" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="profileEmail" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Roll No</label>
+            <input type="text" id="profileRoll" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group">
+            <label>Course</label>
+            <input type="text" id="profileCourse" required />
+            <small class="error"></small>
+          </div>
+          <div class="input-group full">
+            <label>About</label>
+            <textarea id="profileAbout" placeholder="Write about student profile..."></textarea>
+            <small class="error"></small>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h4>College ERP</h4>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Copyright</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>Email: support@collegeerp.com</p>
+          <p>Phone: +91 90000 00000</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 College ERP. All rights reserved.</p>
+      </div>
+    </footer>
+  </main>
+
+  <div class="auth-modal hidden" id="authModal">
+    <div class="auth-box">
+      <button class="auth-close" id="closeAuthModalBtn" type="button">×</button>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-auth="login" type="button">Login</button>
+        <button class="auth-tab" data-auth="register" type="button">Sign Up</button>
+      </div>
+
+      <form id="loginForm" class="auth-form active" novalidate>
+        <h3>Login</h3>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required />
+          <small class="error" id="loginEmailError"></small>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" required minlength="4" />
+          <small class="error" id="loginPasswordError"></small>
+        </div>
+        <button class="btn primary full-btn" type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="auth-form" novalidate>
+        <h3>Sign Up</h3>
+        <div class="field">
+          <label>Name</label>
+          <input type="text" id="registerName" required />
+          <small class="error" id="registerNameError"></small>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="registerEmail" required />
+          <small class="error" id="registerEmailError"></small>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="registerPassword" required minlength="4" />
+          <small class="error" id="registerPasswordError"></small>
+        </div>
+        <button class="btn primary full-btn" type="submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h3 id="modalTitle">Title</h3>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn secondary" id="cancelModalBtn" type="button">Cancel</button>
+        <button class="btn primary" id="confirmModalBtn" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
